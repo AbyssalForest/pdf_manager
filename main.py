@@ -3,7 +3,6 @@ from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 import os
 from fpdf import FPDF
-from PIL import Image
 
 
 class PDFManager():
@@ -27,20 +26,12 @@ class PDFManager():
                 break
 
     def img_to_pdf(self, filename):
-        """ image = Image.open(filename)
-        image.thumbnail((210, 297))
-        image.save('image_tmp.png')
-        print(image.size) """
-
         pdf = FPDF()
         pdf.add_page()
-        pdf.image(filename, 0, 0, 210, 297)
+        pdf.image(filename, 0, 0, 210, 0)
         self.img_counter += 1
         name = f'tmp{self.img_counter}.pdf'
         pdf.output(name, "F")
-
-        """ if os.path.exists("image_tmp.png"):
-            os.remove("image_tmp.png") """
 
     def merge_pdfs(self):
 
@@ -48,7 +39,7 @@ class PDFManager():
             merger = PdfMerger()
 
             for pdf in self.pdfs:
-                if pdf.lower().endswith(('.png', '.jpg', '.jpeg', '.tiff', '.bmp', '.gif')):
+                if pdf.lower().endswith(('.png', '.jpg', '.jpeg')):
                     self.img_to_pdf(pdf)
                     name = f'tmp{self.img_counter}.pdf'
                     merger.append(name)
